@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import logo from "./assets/Screenshot 2025-03-16 162057.png"
 import { AuthContext } from '../../Context/FormContext';
 import { Link } from 'react-router-dom';
+import "./Login.css"
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ function Login() {
       const [emailError, setEmailError] = useState("");
       const [passwordError, setPasswordError] = useState("");
 
-      const {login,loading,error,token}=useContext(AuthContext)
+      const {login,loading,error}=useContext(AuthContext)
 
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,18 +39,16 @@ function Login() {
         }
     
         if (valid) {
-          await login(formData);
-        }
-      };
-      useEffect(() => {
-        if (token) {
+         const result= await login(formData);
+         if(result.success){
           alert("Uğurla daxil oldunuz! 🎉");
           setFormData({
             email: "",
             password: "",
           });
+         }
         }
-      }, [token]);
+      };
   return (
     <div className="login-container">
     <img src={logo} />

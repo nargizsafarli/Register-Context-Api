@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import logo2 from "./assets/Screenshot 2025-03-16 162057.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/FormContext';
+import "./Register.css"
+
 
 function Register() {
     const [name, setName] = useState("");
@@ -14,7 +16,7 @@ function Register() {
     const [formErrors, setFormErrors] = useState({});
     const navigate=useNavigate();
 
-    const {register,loading,error,user}=useContext(AuthContext)
+    const {register,loading,error}=useContext(AuthContext)
 
     const validateForm = () => {
         let errors = {};
@@ -36,7 +38,10 @@ function Register() {
       const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-          await register({ name, surname, email, phone, password,gender });
+       const result= await register({ name, surname, email, phone, password,gender });
+       if(result.success){
+        alert("ugurla qeydiyyatdan kecdiniz")
+          navigate("/login")
           setName("");
           setSurname("");
           setPhone("");
@@ -44,14 +49,10 @@ function Register() {
           setPassword("");
           setTermsAccepted(false);
         }
+      }
       };
 
-      useEffect(() => {
-        if (user) {
-          navigate("/login");
-        }
-      }, [user, navigate]);
-
+     
   return (
     <div className='register-container'>
            <div className='register-text'>

@@ -27,8 +27,10 @@ export const AuthProvider=({children})=>{
           }
     
           setUser(data);
+          return {success:true}
         } catch (err) {
           setError(err.message || "Uğursuz qeydiyyat");
+          return{success:false, message:err.message}
         } finally {
           setLoading(false);
         }
@@ -56,8 +58,10 @@ export const AuthProvider=({children})=>{
     
           setToken(data.token);
           setUser(data);
+          return{success:true}
         } catch (err) {
           setError(err.message || "Daxil olmaq mümkün olmadı");
+          return{success:false, message:err.message}
         } finally {
           setLoading(false);
         }
