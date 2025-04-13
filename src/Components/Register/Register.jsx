@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo2 from "./assets/Screenshot 2025-03-16 162057.png"
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/FormContext';
 
 function Register() {
     const [name, setName] = useState("");
@@ -7,8 +9,12 @@ function Register() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [gender,setGender]=useState("");
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [formErrors, setFormErrors] = useState({});
+    const navigate=useNavigate();
+
+    const {register,loading,error,user}=useContext(AuthContext)
 
     const validateForm = () => {
         let errors = {};
@@ -19,6 +25,7 @@ function Register() {
           errors.phone = "Mobil nömrə düzgün deyil!";
         if (!email || !/\S+@\S+\.\S+/.test(email))
           errors.email = "Email (@gmail.com) formatinda olmalidir!";
+        if (!gender) errors.gender = "Cinsiyyət seçilməlidir.";
         if (!password || password.length < 5)
           errors.password = "Şifrə ən azı 6 simvoldan ibarət olmalıdır.";
         if (!termsAccepted) errors.terms = "Şərtləri qəbul etməlisiniz.";
@@ -26,11 +33,10 @@ function Register() {
         return Object.keys(errors).length === 0;
       };
      
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-    
         if (validateForm()) {
-          const userData = { name, surname, email, phone, password };
+          await register({ name, surname, email, phone, password,gender });
           setName("");
           setSurname("");
           setPhone("");
@@ -39,6 +45,12 @@ function Register() {
           setTermsAccepted(false);
         }
       };
+
+      useEffect(() => {
+        if (user) {
+          navigate("/login");
+        }
+      }, [user, navigate]);
 
   return (
     <div className='register-container'>
@@ -77,6 +89,35 @@ function Register() {
               <p className="error-message">{formErrors.surname}</p>
             )}
           </div>
+          <div className="form-group">
+  <label>Cinsiyyət <span className="important">*</span></label>
+  <div className="radio-group">
+    <label>
+      <input
+        type="radio"
+        name="gender"
+        value="male"
+        checked={gender === "male"}
+        onChange={(e) => setGender(e.target.value)}
+      />
+      Kişi
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="gender"
+        value="female"
+        checked={gender === "female"}
+        onChange={(e) => setGender(e.target.value)}
+      />
+      Qadın
+    </label>
+  </div>
+  {formErrors.gender && (
+    <p className="error-message">{formErrors.gender}</p>
+  )}
+</div>
+
 
           <div className="form-group">
             <label htmlFor="phone">Mobil nömrə <span className='important'>*</span></label>

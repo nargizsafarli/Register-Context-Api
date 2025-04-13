@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from "./assets/Screenshot 2025-03-16 162057.png"
+import { AuthContext } from '../../Context/FormContext';
+import { Link } from 'react-router-dom';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -9,12 +11,14 @@ function Login() {
       const [emailError, setEmailError] = useState("");
       const [passwordError, setPasswordError] = useState("");
 
+      const {login,loading,error,token}=useContext(AuthContext)
+
       const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
       };
 
-      const handleSubmit = (e) => {
+      const handleSubmit = async(e) => {
         e.preventDefault();
     
         let valid = true;
@@ -33,10 +37,19 @@ function Login() {
           setPasswordError("");
         }
     
-        // if (valid) {
-        //   dispatch(login(formData));
-        // }
+        if (valid) {
+          await login(formData);
+        }
       };
+      useEffect(() => {
+        if (token) {
+          alert("Uğurla daxil oldunuz! 🎉");
+          setFormData({
+            email: "",
+            password: "",
+          });
+        }
+      }, [token]);
   return (
     <div className="login-container">
     <img src={logo} />
