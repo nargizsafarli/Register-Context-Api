@@ -107,4 +107,26 @@
   .terms-container {
     margin: 10px 0;
   }
+  .form-group-radio {
+    display: flex;
+    gap: 10px;
+  }
   
+  .radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .radio-option {
+    font-size: 16px;
+    
+  }
+  .radio-option-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    
+  }
