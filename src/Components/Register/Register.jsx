@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import logo2 from "./assets/Screenshot 2025-03-16 162057.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/FormContext";
